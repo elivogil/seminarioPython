@@ -1,25 +1,30 @@
 def String_a_List(nombres):
-    """ Recibo un string de nombres y lo transformo en un listado de los mismos"""
+    """ Recibo un string de nombres, le quito los " ", "'" y "\n", y los devuelvo en una lista """
     nombres = nombres.replace("\n", "")
     nombres = nombres.replace(" ", "")
     nombres = nombres.replace("'", "")
     return nombres.split(',')
 
 def armar_zip(nombres,notas_1,notas_2):
-    """ Recibo 3 listas, las cuales las uno para formar un"""
+    """ A partir de tres listas formo un diccionario, siendo la lista de nombres las claves, 
+    y las dos listas de notas los valores guardados en una lista """
     return{i:[j,k] for i,j,k in zip(nombres,notas_1,notas_2)}
     
-def sacar_promedios(diccio):
-    return map(lambda clave:sum(diccio[clave])/2,diccio)
+def sacar_promedios(notas_agrupadas):
+    """ Con esta funcion recibo un diccionario, y a partir de los valores devuelvo una lista con el promedio de cada alumno """
+    return map(lambda clave:sum(notas_agrupadas[clave])/2,notas_agrupadas)
        
 def prom_total(promedios):
+    """ Recibo un diccionario y devuelvo el promedio de todos los promedios """
     return (sum(promedios.values())/len(promedios))
 
 def max_prom(promedios):
+    """ Esta funcion retorna el mayor promedio que se encuentra en el diccionario """
     return max(promedios,key=promedios.get)
 
-def min_nota(diccio):
-    return min(diccio,key=lambda x:min(diccio[x]))   
+def min_nota(notas_agrupadas):
+    """ Esta funcion retorna la menor nota del diccionario """
+    return min(notas_agrupadas,key=lambda x:min(notas_agrupadas[x]))   
 
 nombres = ''' 'Agustin', 'Alan', 'Andrés', 'Ariadna', 'Bautista', 'CAROLINA', 'CESAR', 
 'David','Diego', 'Dolores', 'DYLAN', 'ELIANA', 'Emanuel', 'Fabián', 'Facundo', 
@@ -37,20 +42,19 @@ notas_2 = [30, 95, 28, 84, 84, 43, 66, 51, 4, 11, 58, 10, 13, 34, 96, 71, 86, 37
            95, 19, 47, 15, 31, 39, 15, 74, 33, 57, 10]
 
 
-#inciso 1 armo estructura conjunta entre listas
-diccio= armar_zip(String_a_List(nombres),notas_1,notas_2)
-print(diccio)
+""" Inciso a: armo un diccionario usando la funcion armar_zip """
+notas_agrupadas= armar_zip(String_a_List(nombres),notas_1,notas_2)
 
-#inciso 2 genero un diccionario "nombre" : "nota promedio del alumno"
-promedios={i:j for i,j in zip(diccio,sacar_promedios(diccio))}
+""" Inciso b: genero un diccionario usando las claves del diccionario "notas_agrupadas", y el promedio de las notas  """
+promedios={i:j for i,j in zip(notas_agrupadas,sacar_promedios(notas_agrupadas))}
 print('Promedios por alumnos: ',promedios)
 
-#inciso 3
+""" Inciso c: imprimo el promedio del curso, calculado por la funcion prom_total """
 print(f"El promedio total del curso: {prom_total(promedios)}")
 
-#inciso 4
+""" Inciso d: imprimo el promedio mas alto, calculado por la funcion max_prom """
 print(f"Alumno con la nota promedio mas alta: {max_prom(promedios)}")
 
-#inciso 5
-print(f"Alumno con la nota mas baja: {min_nota(diccio)}")
+""" Inciso e: imprimo la nota mas baja, calculado por la funcion min_nota """
+print(f"Alumno con la nota mas baja: {min_nota(notas_agrupadas)}")
 
